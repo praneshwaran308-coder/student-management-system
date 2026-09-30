@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
+// API URL
+// Local development: http://localhost:3000
+// Production: set VITE_API_URL in Render/Vercel environment variables
+const API_URL = (
+  import.meta.env.VITE_API_URL || "http://localhost:3000"
+).replace(/\/$/, "");
+
 function App() {
   const [students, setStudents] = useState([]);
   const [search, setSearch] = useState("");
@@ -28,7 +35,7 @@ function App() {
       setLoading(true);
       setError("");
 
-      const response = await fetch("http://localhost:3000/students");
+      const response = await fetch(`${API_URL}/students`);
 
       if (!response.ok) {
         throw new Error("Failed to fetch students");
@@ -126,7 +133,7 @@ function App() {
       if (editingId) {
         // Update student
         const response = await fetch(
-          `http://localhost:3000/students/${editingId}`,
+          `${API_URL}/students/${editingId}`,
           {
             method: "PUT",
             headers: {
@@ -142,8 +149,8 @@ function App() {
           throw new Error(getBackendErrorMessage(data));
         }
 
-        setStudents(
-          students.map((student) =>
+        setStudents((currentStudents) =>
+          currentStudents.map((student) =>
             student._id === editingId ? data : student
           )
         );
@@ -153,16 +160,13 @@ function App() {
         resetForm();
       } else {
         // Add student
-        const response = await fetch(
-          "http://localhost:3000/students",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(studentData),
-          }
-        );
+        const response = await fetch(`${API_URL}/students`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(studentData),
+        });
 
         const data = await response.json();
 
@@ -170,7 +174,10 @@ function App() {
           throw new Error(getBackendErrorMessage(data));
         }
 
-        setStudents([...students, data]);
+        setStudents((currentStudents) => [
+          ...currentStudents,
+          data,
+        ]);
 
         setSuccess("Student added successfully.");
 
@@ -221,7 +228,7 @@ function App() {
       setSuccess("");
 
       const response = await fetch(
-        `http://localhost:3000/students/${id}`,
+        `${API_URL}/students/${id}`,
         {
           method: "DELETE",
         }
@@ -233,8 +240,8 @@ function App() {
         throw new Error(getBackendErrorMessage(data));
       }
 
-      setStudents(
-        students.filter((student) => student._id !== id)
+      setStudents((currentStudents) =>
+        currentStudents.filter((student) => student._id !== id)
       );
 
       setSuccess("Student deleted successfully.");
@@ -296,7 +303,6 @@ function App() {
 
   return (
     <div className="app">
-
       {/* Header */}
       <header className="header">
         <div className="header-content">
@@ -307,7 +313,6 @@ function App() {
       </header>
 
       <main className="container">
-
         {/* Error Message */}
         {error && (
           <div className="message error-message">
@@ -326,7 +331,6 @@ function App() {
 
         {/* Add / Edit Student */}
         <section className="card">
-
           <div className="card-title">
             <h2>
               {editingId ? "Edit Student" : "Add Student"}
@@ -345,7 +349,6 @@ function App() {
             autoComplete="off"
             spellCheck="false"
           >
-
             {/* Name */}
             <div className="form-group">
               <label htmlFor="name">
@@ -425,7 +428,6 @@ function App() {
 
             {/* Buttons */}
             <div className="form-buttons">
-
               <button
                 type="submit"
                 className="add-button"
@@ -450,16 +452,13 @@ function App() {
                   Cancel
                 </button>
               )}
-
             </div>
           </form>
         </section>
 
         {/* Student List */}
         <section className="card">
-
           <div className="section-header">
-
             <div>
               <h2>Students</h2>
 
@@ -472,14 +471,11 @@ function App() {
             <span className="student-count">
               {filteredStudents.length} Students
             </span>
-
           </div>
 
           {/* Search and Filter */}
           <div className="filter-section">
-
             <div className="search-container">
-
               <label htmlFor="search">
                 Search Students
               </label>
@@ -495,11 +491,9 @@ function App() {
                 spellCheck="false"
                 autoComplete="off"
               />
-
             </div>
 
             <div className="department-filter">
-
               <label htmlFor="department-filter">
                 Department
               </label>
@@ -522,7 +516,6 @@ function App() {
                   </option>
                 ))}
               </select>
-
             </div>
 
             {hasActiveFilters && (
@@ -534,7 +527,6 @@ function App() {
                 Clear Filters
               </button>
             )}
-
           </div>
 
           {/* Loading */}
@@ -544,9 +536,7 @@ function App() {
               <p>Loading students...</p>
             </div>
           ) : filteredStudents.length === 0 ? (
-
             <div className="empty-state">
-
               <div className="empty-icon">
                 📚
               </div>
@@ -576,15 +566,10 @@ function App() {
                   </button>
                 </>
               )}
-
             </div>
-
           ) : (
-
             <div className="table-container">
-
               <table>
-
                 <thead>
                   <tr>
                     <th>Name</th>
@@ -596,11 +581,8 @@ function App() {
                 </thead>
 
                 <tbody>
-
                   {filteredStudents.map((student) => (
-
                     <tr key={student._id}>
-
                       <td>
                         <span className="student-name">
                           {student.name}
@@ -622,9 +604,7 @@ function App() {
                       </td>
 
                       <td>
-
                         <div className="actions">
-
                           <button
                             className="edit-button"
                             onClick={() =>
@@ -652,25 +632,15 @@ function App() {
                               ? "Deleting..."
                               : "Delete"}
                           </button>
-
                         </div>
-
                       </td>
-
                     </tr>
-
                   ))}
-
                 </tbody>
-
               </table>
-
             </div>
-
           )}
-
         </section>
-
       </main>
     </div>
   );
