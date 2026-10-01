@@ -686,3 +686,7 @@ td:nth-child(14):has(> *) {
     font-size: 13px;
   }
 }
+/* Force all table headers to left alignment */
+th {
+  text-align: left !important;
+}
