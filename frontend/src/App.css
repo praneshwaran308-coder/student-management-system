@@ -20,7 +20,9 @@ select {
   min-height: 100vh;
 }
 
-/* Header */
+/* =========================
+   Header
+========================= */
 
 .header {
   background: #111827;
@@ -30,7 +32,7 @@ select {
 
 .header-content {
   width: 90%;
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -39,20 +41,19 @@ select {
   margin-bottom: 8px;
 }
 
-.header p {
-  color: #cbd5e1;
-  font-size: 16px;
-}
-
-/* Main container */
+/* =========================
+   Main Container
+========================= */
 
 .container {
   width: 90%;
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 35px auto;
 }
 
-/* Cards */
+/* =========================
+   Cards
+========================= */
 
 .card {
   background: white;
@@ -83,7 +84,9 @@ select {
   font-weight: 600;
 }
 
-/* Messages */
+/* =========================
+   Messages
+========================= */
 
 .message {
   display: flex;
@@ -112,17 +115,20 @@ select {
   border: 1px solid #bbf7d0;
 }
 
-/* Form */
+/* =========================
+   Student Form
+========================= */
 
 .student-form {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .form-group label,
@@ -134,11 +140,15 @@ select {
   font-size: 14px;
 }
 
-/* All form inputs */
+/* =========================
+   Form Inputs + Selects
+========================= */
 
 .form-group input,
+.form-group select,
 .search-container input,
 .department-filter select {
+  width: 100%;
   padding: 12px 14px;
   border: 1px solid #d1d5db;
   border-radius: 8px;
@@ -157,7 +167,29 @@ select {
 
   transition:
     border-color 0.2s,
-    box-shadow 0.2s;
+    box-shadow 0.2s,
+    background-color 0.2s;
+}
+
+/* Select appearance */
+
+.form-group select,
+.department-filter select {
+  cursor: pointer;
+  appearance: auto;
+}
+
+/* Date input */
+
+.form-group input[type="date"] {
+  color-scheme: light;
+  cursor: pointer;
+}
+
+/* Number inputs */
+
+.form-group input[type="number"] {
+  appearance: auto;
 }
 
 /* Placeholder */
@@ -199,6 +231,7 @@ select {
 /* Focus */
 
 .form-group input:focus,
+.form-group select:focus,
 .search-container input:focus,
 .department-filter select:focus {
   background-color: #ffffff !important;
@@ -209,12 +242,15 @@ select {
   box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
-/* Form buttons */
+/* =========================
+   Form Buttons
+========================= */
 
 .form-buttons {
-  grid-column: span 2;
+  grid-column: span 3;
   display: flex;
   gap: 12px;
+  margin-top: 3px;
 }
 
 .add-button {
@@ -227,11 +263,17 @@ select {
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition:
+    background 0.2s,
+    transform 0.1s;
 }
 
 .add-button:hover:not(:disabled) {
   background: #4338ca;
+}
+
+.add-button:active:not(:disabled) {
+  transform: translateY(1px);
 }
 
 .add-button:disabled {
@@ -260,7 +302,9 @@ select {
   cursor: not-allowed;
 }
 
-/* Section header */
+/* =========================
+   Section Header
+========================= */
 
 .section-header {
   display: flex;
@@ -288,7 +332,9 @@ select {
   white-space: nowrap;
 }
 
-/* Search and filters */
+/* =========================
+   Search + Filters
+========================= */
 
 .filter-section {
   display: grid;
@@ -323,42 +369,60 @@ select {
   background: #f3f4f6;
 }
 
-/* Table */
+/* =========================
+   Table
+========================= */
 
 .table-container {
+  width: 100%;
   overflow-x: auto;
+  overflow-y: hidden;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
 }
 
 table {
   width: 100%;
+  min-width: 1800px;
   border-collapse: collapse;
 }
 
 th,
 td {
   text-align: left;
-  padding: 15px;
+  padding: 14px 15px;
   border-bottom: 1px solid #e5e7eb;
+  white-space: nowrap;
 }
 
 th {
   background: #f9fafb;
   font-size: 14px;
   color: #374151;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 td {
-  font-size: 15px;
+  font-size: 14px;
+  color: #374151;
 }
 
 tbody tr:hover {
   background: #f9fafb;
 }
 
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
 .student-name {
   font-weight: 600;
   color: #111827;
 }
+
+/* Department */
 
 .department {
   display: inline-block;
@@ -370,7 +434,19 @@ tbody tr:hover {
   font-weight: 600;
 }
 
-/* Action buttons */
+/* Status */
+
+td:nth-child(14) {
+  font-weight: 600;
+}
+
+td:nth-child(14):has(> *) {
+  font-weight: 600;
+}
+
+/* =========================
+   Action Buttons
+========================= */
 
 .actions {
   display: flex;
@@ -385,7 +461,10 @@ tbody tr:hover {
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s, opacity 0.2s;
+  transition:
+    background 0.2s,
+    opacity 0.2s,
+    transform 0.1s;
 }
 
 .edit-button {
@@ -406,13 +485,20 @@ tbody tr:hover {
   background: #fecaca;
 }
 
+.edit-button:active:not(:disabled),
+.delete-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
 .edit-button:disabled,
 .delete-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-/* Loading */
+/* =========================
+   Loading
+========================= */
 
 .loading-state {
   display: flex;
@@ -439,7 +525,9 @@ tbody tr:hover {
   }
 }
 
-/* Empty state */
+/* =========================
+   Empty State
+========================= */
 
 .empty-state {
   text-align: center;
@@ -477,7 +565,35 @@ tbody tr:hover {
   background: #4338ca;
 }
 
-/* Responsive */
+/* =========================
+   Responsive - Tablet
+========================= */
+
+@media (max-width: 1000px) {
+  .student-form {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .form-buttons {
+    grid-column: span 2;
+  }
+
+  .container {
+    width: 94%;
+  }
+
+  .header-content {
+    width: 94%;
+  }
+
+  table {
+    min-width: 1750px;
+  }
+}
+
+/* =========================
+   Responsive - 800px
+========================= */
 
 @media (max-width: 800px) {
   .header {
@@ -506,6 +622,10 @@ tbody tr:hover {
   }
 }
 
+/* =========================
+   Responsive - Mobile
+========================= */
+
 @media (max-width: 700px) {
   .student-form {
     grid-template-columns: 1fr;
@@ -532,7 +652,15 @@ tbody tr:hover {
   .actions {
     flex-direction: column;
   }
+
+  table {
+    min-width: 1700px;
+  }
 }
+
+/* =========================
+   Responsive - Small Mobile
+========================= */
 
 @media (max-width: 500px) {
   .header {
@@ -543,8 +671,13 @@ tbody tr:hover {
     font-size: 23px;
   }
 
-  .header p {
-    font-size: 14px;
+  .container {
+    width: 94%;
+  }
+
+  .card {
+    padding: 17px;
+    border-radius: 12px;
   }
 
   th,
